@@ -4,9 +4,7 @@
 
 
 # from Tkinter import *
-# import tkMessageBox as message_box
 from tkinter import *
-import tkinter.messagebox as message_box
 
 social_average_salary = 7706
 tax_free = 3500
@@ -234,76 +232,3 @@ def create_item(root, label_name):
     entry.pack()
     return label, entry
 
-
-def submit_button():
-    pay_after_tax_str = pay_after_tax_entry.get('0.0', END)
-    if len(pay_after_tax_str) == 1:
-        message_box.showinfo("Error", "Please input Salary After Tax")
-        return
-    net_income = float(pay_after_tax_str.replace(',', '').replace(' ', ''))
-
-    insurance_base_str = insurance_base_entry.get('0.0', END)
-    if len(insurance_base_str) == 1:
-        message_box.showinfo("Error", "Please input Insurance Base")
-        return
-    insurance_base = float(insurance_base_str.replace(',', '').replace(' ', ''))
-
-    house_fund_base_str = house_fund_base_entry.get('0.0', END)
-    if len(house_fund_base_str) == 1:
-        message_box.showinfo("Error", "Please input House Fund Base")
-        return
-    house_fund_base = float(house_fund_base_str.replace(',', '').replace(' ', ''))
-
-    flush_insurance(insurance_base, house_fund_base)
-
-    for salary in range(2000, int(net_income * 2)):
-        net_salary_mon = get_net_salary(salary)
-        if net_salary_mon >= net_income:
-            fill_insurance()
-            fill_tax()
-            break
-
-
-if __name__ == "__main__":
-    tk = Tk()
-
-    pay_after_tax_label, pay_after_tax_entry = create_item(tk, "Net Salary")
-    insurance_base_label, insurance_base_entry = create_item(tk, 'Insurance Base')
-    house_fund_base_label, house_fund_base_entry = create_item(tk, 'House Fund Base')
-    # bonus_label, bonus_entry = create_item(tk, 'Bonus')
-    stock_label, stock_entry = create_item(tk, 'Stock')
-    pay_before_tax_label, pay_before_tax_entry = create_item(tk, 'Salary')
-
-    # Employ
-    tax_employ_label, tax_employ_entry = create_item(tk, 'Tax of Employ')
-    house_fund_employ_label, house_fund_employ_entry = create_item(tk, 'House Fund of Employ')
-    retirement_insurance_employ_label, retirement_insurance_employ_entry = create_item(tk, 'Retirement Insurance of '
-                                                                                           'Employ')
-    medicine_insurance_employ_label, medicine_insurance_employ_entry = create_item(tk, 'Medicine Insurance of Employ')
-    unemployed_insurance_employ_label, unemployed_insurance_employ_entry = create_item(tk, 'Unemployed Insurance of '
-                                                                                           'Employ')
-    # injure_insurance_employ_label, injure_insurance_employ_entry = create_item(tk, 'Injure Insurance of Employ')
-    # born_insurance_employ_label, born_insurance_employ_entry = create_item(tk, 'Born Insurance of Employ')
-
-    # Company
-    house_fund_company_label, house_fund_company_entry = create_item(tk, 'Housing Funds of Company')
-    retirement_insurance_company_label, retirement_insurance_company_entry = create_item(tk, 'Endowment Insurance of '
-                                                                                             'Company')
-    medicine_insurance_company_label, medicine_insurance_company_entry = create_item(tk, 'Medical Insurance of '
-                                                                                         'Company')
-    unemployed_insurance_company_label, unemployed_insurance_company_entry = create_item(tk,
-                                                                                         'Unemployment Insurance of '
-                                                                                         'Company')
-    injure_insurance_company_label, injure_insurance_company_entry = create_item(tk, 'Work-related Injury '
-                                                                                     'Insurance of Company')
-    born_insurance_company_label, born_insurance_company_entry = create_item(tk, 'Childbirth Insurance of Company')
-
-    submit = Button(tk, text='Submit', command=submit_button)
-    submit.pack()
-
-    # for text
-    replace_text(pay_after_tax_entry, '21,222.96')
-
-    replace_text(insurance_base_entry, '7706')
-    replace_text(house_fund_base_entry, '4000')
-    tk.mainloop()

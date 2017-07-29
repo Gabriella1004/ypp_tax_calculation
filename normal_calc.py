@@ -236,11 +236,11 @@ def create_item(root, label_name):
 
 
 def submit_button():
-    pay_after_tax_str = pay_after_tax_entry.get('0.0', END)
-    if len(pay_after_tax_str) == 1:
-        message_box.showinfo("Error", "Please input Salary After Tax")
+    pay_before_tax_str = pay_before_tax_entry.get('0.0', END)
+    if len(pay_before_tax_str) == 1:
+        message_box.showinfo("Error", "Please input Salary")
         return
-    net_income = float(pay_after_tax_str.replace(',', '').replace(' ', ''))
+    month_salary = float(pay_before_tax_str.replace(',', '').replace(' ', ''))
 
     insurance_base_str = insurance_base_entry.get('0.0', END)
     if len(insurance_base_str) == 1:
@@ -254,25 +254,30 @@ def submit_button():
         return
     house_fund_base = float(house_fund_base_str.replace(',', '').replace(' ', ''))
 
-    flush_insurance(insurance_base, house_fund_base)
+    stock_str = stock_entry.get('0.0', END)
+    if len(stock_str) == 1:
+        message_box.showinfo("Error", "Please input House Fund Base")
+        return
+    stock = float(stock_str.replace(',', '').replace(' ', ''))
 
-    for salary in range(2000, int(net_income * 2)):
-        net_salary_mon = get_net_salary(salary)
-        if net_salary_mon >= net_income:
-            fill_insurance()
-            fill_tax()
-            break
+    flush_insurance(insurance_base, house_fund_base)
+    flush_tax(month_salary, stock)
+
+    net_income = get_net_salary_bonus(month_salary, stock)
+    fill_insurance()
+    fill_tax()
+    fill_net_salary(net_income)
 
 
 if __name__ == "__main__":
     tk = Tk()
 
-    pay_after_tax_label, pay_after_tax_entry = create_item(tk, "Net Salary")
+    pay_before_tax_label, pay_before_tax_entry = create_item(tk, 'Salary')
     insurance_base_label, insurance_base_entry = create_item(tk, 'Insurance Base')
     house_fund_base_label, house_fund_base_entry = create_item(tk, 'House Fund Base')
     # bonus_label, bonus_entry = create_item(tk, 'Bonus')
     stock_label, stock_entry = create_item(tk, 'Stock')
-    pay_before_tax_label, pay_before_tax_entry = create_item(tk, 'Salary')
+    pay_after_tax_label, pay_after_tax_entry = create_item(tk, "Net Salary")
 
     # Employ
     tax_employ_label, tax_employ_entry = create_item(tk, 'Tax of Employ')
@@ -302,8 +307,8 @@ if __name__ == "__main__":
     submit.pack()
 
     # for text
-    replace_text(pay_after_tax_entry, '21,222.96')
-
+    replace_text(pay_before_tax_entry, '29,858.00')
+    replace_text(stock_entry, '0')
     replace_text(insurance_base_entry, '7706')
     replace_text(house_fund_base_entry, '4000')
     tk.mainloop()
