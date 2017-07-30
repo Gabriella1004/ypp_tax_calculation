@@ -115,6 +115,21 @@ class StockTax(object):
         return round(net_stock / (1 - self.ratio), 2)
 
 
+class Bonus(object):
+    def __init__(self, standard):
+        self.standard = standard
+
+    def get_tax(self, month_bonus):
+        grade = [0, 0, 0]
+        for i in self.standard:
+            if month_bonus < i[0]:
+                break
+            grade = i
+        annual_tax = month_bonus * 12 * grade[1] - grade[2]
+        print(annual_tax)
+        return round(annual_tax / 12, 2)
+
+
 if __name__ == "__main__":
     from tkinter import Tk
 
