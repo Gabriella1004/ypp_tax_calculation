@@ -11,7 +11,7 @@ from lib.lib import *
 from lib.base_class import *
 
 
-def submit_button(house_obs, insurance_obs, tax_entry, net_salary_entry):
+def submit_button():
     salary_str = salary_entry.get('0.0', END)
     if len(salary_str) == 1:
         message_box.showinfo("Error", "Please input Salary")
@@ -49,8 +49,8 @@ def submit_button(house_obs, insurance_obs, tax_entry, net_salary_entry):
     employ_tax = salary_tax_ob.get_tax(month_salary - employ_costs)
 
     stock_tax_ob = StockTax(stock_tax_employ_ratio)
-    employ_tax += stock_tax_ob.get_tax(stock)
-    replace_text(tax_entry, employ_tax)
+    replace_text(salary_tax_entry, employ_tax)
+    replace_text(stock_tax_entry, stock_tax_ob.get_tax(stock))
     replace_text(net_salary_entry, round(month_salary + stock - employ_tax - employ_costs, 2))
 
 
@@ -63,13 +63,15 @@ if __name__ == "__main__":
     house_name = 'Housing Funds'
 
     root = Tk()
+    root.wm_title('Normal Calculator')
 
     salary_entry = create_item(root, 'Salary')
     insurance_base_entry = create_item(root, 'Insurance Base')
     house_fund_base_entry = create_item(root, 'House Fund Base')
     stock_entry = create_item(root, 'Stock')
     net_salary_entry = create_item(root, "Net Salary")
-    tax_entry = create_item(root, 'Tax')
+    salary_tax_entry = create_item(root, 'Salary Tax')
+    stock_tax_entry = create_item(root, 'Stock Tax')
 
     house_obs = []
     house_fund = HouseFund(house_fund_employ_ratio, house_fund_company_ratio, house_fund_base_max,
@@ -109,8 +111,7 @@ if __name__ == "__main__":
 
     insurance_obs.append(insurance)
 
-    submit = Button(root, text='Submit', command=lambda: submit_button(house_obs, insurance_obs, tax_entry,
-                                                                       net_salary_entry))
+    submit = Button(root, text='Submit', command=lambda: submit_button())
     submit.pack()
 
     # for text
