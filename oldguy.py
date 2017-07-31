@@ -77,10 +77,10 @@ if __name__ == "__main__":
     root.wm_title('Salary Calculator on Net Salary')
 
     salary_entry = create_item(root, 'Salary')
-    insurance_base_entry = create_item(root, 'Insurance Base')
-    house_fund_base_entry = create_item(root, 'House Fund Base')
+    insurance_base_entry = create_item(root, 'Insurance Base', bg='yellow')
+    house_fund_base_entry = create_item(root, 'House Fund Base', bg='yellow')
     stock_entry = create_item(root, 'Stock')
-    net_salary_entry = create_item(root, "Net Salary")
+    net_salary_entry = create_item(root, "Net Salary", bg='yellow')
     salary_tax_entry = create_item(root, 'Salary Tax')
     stock_tax_entry = create_item(root, 'Stock Tax')
 
