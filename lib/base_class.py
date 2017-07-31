@@ -22,10 +22,10 @@ class BaseClass(object):
         return 0
 
     def get_employ(self, salary):
-        return self.calc(salary, self.employ_ratio) + self.addition
+        return round(self.calc(salary, self.employ_ratio) + self.addition, 2)
 
     def get_company(self, salary):
-        return self.calc(salary, self.company_ratio)
+        return round(self.calc(salary, self.company_ratio), 2)
 
     def fill_entry(self, base):
         if not self.hide:

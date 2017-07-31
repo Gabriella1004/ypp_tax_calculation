@@ -42,6 +42,7 @@ def submit_button():
     salary_tax_ob = SalaryTax(tax_standard, tax_free)
 
     start_level = 1
+    salary = start_level
     for salary in range(start_level, int(net_salary * 2 + 0.5)):
         if salary_tax_ob.get_net_salary(salary) > net_salary:
             break
@@ -76,10 +77,10 @@ if __name__ == "__main__":
     root = Tk()
     root.wm_title('Salary Calculator on Net Salary')
 
-    salary_entry = create_item(root, 'Salary')
+    salary_entry = create_item(root, 'Monthly Salary')
     insurance_base_entry = create_item(root, 'Insurance Base', bg='yellow')
     house_fund_base_entry = create_item(root, 'House Fund Base', bg='yellow')
-    stock_entry = create_item(root, 'Stock')
+    stock_entry = create_item(root, 'Monthly Stock')
     net_salary_entry = create_item(root, "Net Salary", bg='yellow')
     salary_tax_entry = create_item(root, 'Salary Tax')
     stock_tax_entry = create_item(root, 'Stock Tax')

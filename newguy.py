@@ -12,11 +12,11 @@ from lib.base_class import *
 
 
 def submit_button():
-    salary_str = salary_entry.get('0.0', END)
-    if len(salary_str) == 1:
+    income_str = income_entry.get('0.0', END)
+    if len(income_str) == 1:
         message_box.showinfo("Error", "Please input Salary")
         return
-    month_salary = float(salary_str.replace(',', '').replace(' ', ''))
+    month_income = float(income_str.replace(',', '').replace(' ', ''))
 
     insurance_base_str = insurance_base_entry.get('0.0', END)
     if len(insurance_base_str) == 1:
@@ -30,12 +30,6 @@ def submit_button():
         return
     house_fund_base = float(house_fund_base_str.replace(',', '').replace(' ', ''))
 
-    stock_str = stock_entry.get('0.0', END)
-    if len(stock_str) == 1:
-        message_box.showinfo("Error", "Please input Stock")
-        return
-    stock = float(stock_str.replace(',', '').replace(' ', ''))
-
     employ_costs = 0
     for i in house_obs:
         employ_costs += i.get_employ(house_fund_base)
@@ -46,12 +40,32 @@ def submit_button():
         i.fill_entry(insurance_base)
 
     salary_tax_ob = SalaryTax(tax_standard, tax_free)
-    employ_tax = salary_tax_ob.get_tax(month_salary - employ_costs)
+    start_level = 1
+    salary = start_level
+    for salary in range(start_level, int(month_income + 0.5) + 1):
+        if salary_tax_ob.beyond(salary, stock_tax_employ_ratio):
+            break
+
+    if salary + employ_costs > month_income:
+        true_salary = month_income
+        stock = 0
+    else:
+        true_salary = salary + employ_costs
+        stock = round(month_income - true_salary, 2)
+
+    need_tax_salary = true_salary - employ_costs
+    employ_tax = salary_tax_ob.get_tax(need_tax_salary)
 
     stock_tax_ob = StockTax(stock_tax_employ_ratio)
+    stock_tax = stock_tax_ob.get_tax(stock)
+    net_salary = round(need_tax_salary - employ_tax, 2)
+    print(round(net_salary + stock - stock_tax, 2))
+
     replace_text(salary_tax_entry, employ_tax)
-    replace_text(stock_tax_entry, stock_tax_ob.get_tax(stock))
-    replace_text(net_salary_entry, round(month_salary + stock - employ_tax - employ_costs, 2))
+    replace_text(stock_tax_entry, stock_tax)
+    replace_text(salary_entry, round(true_salary, 2))
+    replace_text(stock_entry, stock)
+    replace_text(net_salary_entry, net_salary)
 
 
 if __name__ == "__main__":
@@ -63,12 +77,13 @@ if __name__ == "__main__":
     house_name = 'Housing Funds'
 
     root = Tk()
-    root.wm_title('Normal Calculator')
+    root.wm_title('New Employ Calculator')
 
-    salary_entry = create_item(root, 'Monthly Salary', bg='yellow')
+    income_entry = create_item(root, 'Total Income', bg='yellow')
     insurance_base_entry = create_item(root, 'Insurance Base', bg='yellow')
     house_fund_base_entry = create_item(root, 'House Fund Base', bg='yellow')
-    stock_entry = create_item(root, 'Monthly Stock', bg='yellow')
+    salary_entry = create_item(root, 'Monthly Salary')
+    stock_entry = create_item(root, 'Monthly Stock')
     net_salary_entry = create_item(root, "Net Salary")
     salary_tax_entry = create_item(root, 'Salary Tax')
     stock_tax_entry = create_item(root, 'Stock Tax')
@@ -115,8 +130,8 @@ if __name__ == "__main__":
     submit.pack()
 
     # for text
-    replace_text(salary_entry, '2000')
-    replace_text(stock_entry, '0')
+    replace_text(income_entry, '4000')
+    # replace_text(stock_entry, '0')
     replace_text(insurance_base_entry, '1000')
     replace_text(house_fund_base_entry, '4000')
     # replace_text(insurance_base_entry, '29,858.00')
