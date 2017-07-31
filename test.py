@@ -37,8 +37,6 @@ if __name__ == "__main__":
     bonus_entry = create_item(root, 'Monthly Bonus')
     bonus_tax_entry = create_item(root, 'Monthly Bonus Tax')
 
-    submit = Button(root, text='Submit', command=lambda: submit_button())
-    submit.pack()
 
     # for text
     replace_text(bonus_entry, '1000')

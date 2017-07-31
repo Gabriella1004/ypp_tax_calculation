@@ -61,10 +61,12 @@ def replace_text(entry, value):
 
 def create_item(root, label_name, bg='snow', fg='black'):
     var = StringVar()
-    label = Label(root, textvariable=var, relief=RAISED)
+    f = Frame(root)
+    label = Label(f, textvariable=var, relief=RAISED, fg=fg, width=40)
     var.set(label_name)
-    label.pack()
-    entry = Text(root, height=1, bg=bg, fg=fg)
-    entry.pack()
+    label.pack(side=LEFT)
+    entry = Text(f, height=1, bg=bg, fg=fg, width=40)
+    entry.pack(side=RIGHT)
+    f.pack()
     return entry
 

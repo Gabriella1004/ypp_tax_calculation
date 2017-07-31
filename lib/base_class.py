@@ -83,6 +83,8 @@ class SalaryTax(object):
             if tax_salary < i[0]:
                 break
             grade = i
+        if tax_salary < 0:
+            tax_salary = 0
         return round(tax_salary * grade[1] - grade[2], 2)
 
     def get_net_salary(self, salary):
